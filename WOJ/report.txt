@@ -1,0 +1,54 @@
+
+//3番
+
+
+講義資料中の以下の全ての実行結果を回答欄に貼りつけるとともに、各結果を得た仕組みを簡潔に説明せよ。
+
+(3-1) DisplayURL について何らかの URL を指定して実行した結果、および、その結果を得た仕組み
+DisplayURLについて実行した結果args[0]に指定したURLのサイトのhtmlコードが出力された。仕組みとしては
+まずurl.openstream()のopen streamメソッドによってurlの文字列を起点にstream上に流すことが出来、それをInputStreamReaderによってInputStream上に文字列を流すことが出来、そのあとにBufferedReaderインスタンスを新しく作成することで、unicode文字列として1行毎に読み込むことが可能になる,
+その後readLine()メソッドによって一番最新のstreamの1行を読み込んで戻り値としてデータを文字列として返却する。それを戻り値がなくなるまで繰り返して終了後にclose()メソッドを利用してメモリリーク防止のためにリソースを開放させる
+(3-2) DaytimeTCPClient について time-b.timefreq.bldrdoc.gov を接続先として指定して実行した結果、、および、その結果を得た仕組み
+結果として
+57570 16-07-01 02:54:40 50 0 0 548.4 UTC(NIST) *
+のように出力された
+番号の意味として、左からマシンの名前、接続された時刻とポート番号とマシンのlocationを出力している。
+仕組みとしてはSocketにポート番号13でその前にInetAdressの名前を入力することでsocketインスタンスを作成することが出来、
+br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+と宣言することでデータソースをインプットストリームに流してその流したものをUnicode文字列として1行ごとに読み込めるようにしている。
+その後、それが読み込めない場合はホストが見つからない・I/Oエラーですと出力してtry文がなかったことになり、読み込めた場合は、最後にストリーム上にデータが流れていた場合はメモリリーク帽子のためにリソース解放のためのsocket.close()と記述してある。
+
+
+(3-3) DaytimeUDPServer を実行したままの状態で、同じマシン上で DaytimeUDPClient について localhost （つまり同じマシン）をサーバとして指定実行した結果、および、その結果を得た仕組み
+DaytimeUDPServerをターミナルでsudo権を利用して実行させた状態で、他ターミナルを起動し、DaytimeClientを起動した所、
+[B@6d6f6e28
+と出力した。
+ますDaytimeUDPServer.javaで通信ネットワークにおいて宛先アドレスなどの制御情報を付加させたデータの小さなまとまりであるdatagram(別名packet)を特定のポート番号を指定して作成し、それぞれ入力と出力に使用するbyte長さ配列をデータ上限256byteで用意する。
+その後、while文によって常に外部からのDatagramPacket型のインスタンスを受け取り続け、受け取った後、
+outData = (new java.util.Date()).toString().getBytes();
+メソッドにおいて新しく作成したインスタンスを文字列にしてその文字列の大きさをbyte長さで獲得したものをbyteクラスのoutDataに代入する
+特定のhost上で送る用のdatagramの長さと特定のポート番号を指定してdatagramを作成して送る。
+その後System.out.println(inData);
+メソッドを利用してその内容を出力する
+//4番
+
+
+クラスEchoUDPServerを完成させて、受信データを送り返すエコーサービスのサーバをUDP通信で実装し、その全体を回答欄に貼り付けよ。各送受信におけるデータサイズの上限は256バイトとする。クライアントにはクラスEchoUDPClientを利用し、サーバ側のポート番号として7を指定すること。
+
+サーバを起動した状態で同一マシン上でクライアントを以下のように用いると、以下を標準出力に得ること。
+
+>java EchoUDPClient localhost
+
+Client sent    : This is test
+Client received: This is test
+
+
+サーバを起動していない状態でクライアントを以下のように用いると、以下を標準出力に得ること。
+
+>java EchoUDPClient localhost
+
+Client sent    : This is test
+Error: java.net.SocketTimeoutException: Receive timed out
+
+ヒント: 講義資料における DaytimeUDPServer を参考にするとよい。
+参考資料： EchoUDPServer.java  
