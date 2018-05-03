@@ -22,44 +22,19 @@ template<class T,class U>inline void chmax(T &t,U f){if(t<f)t=f;}
 typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int, int> P;
-typedef pair<P, int> PPI;
+typedef pair<ll,P> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
-}
+ll n,a,b;
 void solve(){
-   cin.tie(0);
+  cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
+  cin>>n>>a>>b;
+  std::vector<PPI> v(n);
+  rep(i,n) cin>>v[i].fi>>v[i].se.fi>>v[i].se.se;
 
-  }
+
 }
 int main(){
   solve();

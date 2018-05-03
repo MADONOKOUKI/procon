@@ -26,40 +26,36 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
+ll n,m;
+ll dp[20001][256];
+ll c[16],x[20000];
+ll rec(ll p,ll y){
+  if(dp[p][y] >= 0) return dp[p][y];
+
+  if(p == n) return 0;
+
+  long ret=LONG_MAX;
+    for(ll i=0; i<m; ++i){ //??????????????????????????¨????????????????????°????????????
+        ll ny = y+c[i];
+        if(ny<0) ny=0;
+        else if(ny>255) ny=255;
+
+        ret = MIN(ret, rec(p+1,ny)+(ny-x[p])*(ny-x[p]));
+    }
+    return dp[p][y]=ret;
 }
 void solve(){
-   cin.tie(0);
+  cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
-
+  while(1){
+    cin>>n>>m;
+    if(n==0) break;
+    rep(i,m) cin>>c[i];
+    rep(i,n) cin>>x[i];
+    memset(dp,-1,sizeof(dp));
+    printf("%lld\n",rec(0,128));
   }
+
 }
 int main(){
   solve();

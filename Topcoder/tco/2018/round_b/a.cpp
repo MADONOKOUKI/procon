@@ -26,40 +26,28 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
-}
+string s;
 void solve(){
-   cin.tie(0);
+  cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
+  cin>>s;
+  ll cnt = 0;
+  bool flg = true;
+  while(flg){
+    flg = false;
+    string nw = "";
+    rep(i,s.size()-1) {
+      if(s[i]==s[i-1]) {
+        flg = true;
+        cnt++;
+        i++;
+      } else {
+        nw+=s[i-1];
+      }
     }
-    cout<<cnt<<endl;
-
+    s = nw;
   }
+  cout<<cnt<<endl;
 }
 int main(){
   solve();

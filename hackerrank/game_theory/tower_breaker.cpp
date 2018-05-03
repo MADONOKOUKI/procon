@@ -26,11 +26,20 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-
+ll t;
 void solve(){
    cin.tie(0);
   ios::sync_with_stdio(false);
-
+  cin>>t;
+  ll n,m;
+  while(t--){
+    cin>>n>>m;
+    if(m==1) cout<<2<<endl;
+    else {
+      if(n%2==0) cout<<2<<endl;
+      else cout<<1<<endl;
+    }
+  }
 }
 int main(){
   solve();

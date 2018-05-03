@@ -26,40 +26,38 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
+ll n;
+struct bal{
+  double h;
+  double s;
+};
+std::vector<bal> vec;
+
+bool binary_search(ll val){
+  std::vector<ll> t;
+  rep(i,n) {
+    if(val < vec[i].h) return false;
+    t.pb((val-vec[i].h) / vec[i].s);
+  }
+  sort(all(t));
+  rep(i,n) if(t[i] < i) return false;
+  return true;
 }
 void solve(){
    cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
-
+  cin>>n;
+  vec.resize(n);
+  rep(i,n) cin>>vec[i].h>>vec[i].s;
+  ll left = 0,right = 1e15;
+  ll mid = 0;
+  while(right - left > 1){
+    mid = (left + right) / 2;
+    if(binary_search(mid)) right = mid;
+    else left = mid;
   }
+  cout<<right<<endl;
+
 }
 int main(){
   solve();

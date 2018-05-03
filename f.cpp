@@ -26,40 +26,29 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
+
+ll greedy_number(int a,int k){
+  if(a<k) return 0;
+  if(a%k == 0) return a/k;
+
+  ll dif = ((a/k)+1);
+  return greedy_number(a-max((a%k)/dif,(ll)1)*dif,k);
+
 }
 void solve(){
    cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
-
+  ll n;
+  ll A,K;
+  cin>>n;
+  int nim=0;
+  rep(i,n) {
+    cin>>A>>K;
+    nim ^= greedy_number(A,K);
   }
+  if(nim==0) cout<<"Aoki"<<endl;
+  else cout<<"Takahashi"<<endl;
+
 }
 int main(){
   solve();

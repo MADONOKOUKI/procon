@@ -26,40 +26,44 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
-}
+ll n,l;
+string s;
 void solve(){
-   cin.tie(0);
+  cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
+  cin>>l>>n;
+  while(n--){
+    cin>>s;
+    ll dm = 0;
+    ll flg= 0;
     ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
+    std::vector<ll> vec;
+    rep(i,s.size()){
+      if(s[i]=='C') flg++;
+      else {
+        vec.pb(flg);
+        dm += pow(2,flg);
+        cnt++;
+        flg =0;
+      }
     }
-    cout<<cnt<<endl;
+    if(cnt > l) cout<<"IMPOSSIBLE"<<endl;
+    else if(dm <= l) cout<<0<<endl;
+    else {
+      sort(all(vec));
+      reverse(all(vec));
+      ll ans = 0;
+      rep(i,vec.size()){
+        if(dm - pow(2,vec[i]) <= l) {
 
+        } else {
+          ans +=
+          dm -=(pow(2,vec[i])-1);
+        }
+      }
+    }
   }
+
 }
 int main(){
   solve();

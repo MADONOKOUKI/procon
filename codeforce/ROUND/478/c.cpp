@@ -26,40 +26,36 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
-}
+ll n,q,k,tot=0;
+std::vector<ll> a;
 void solve(){
    cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
-
+  cin>>n>>q;
+  a.resize(n+1);
+  a[0] = 0;
+  repl(i,1,n+1) {
+    cin>>a[i];
+    tot += a[i];
   }
+  repl(i,2,n+1) a[i]+=a[i-1];
+  ll dam = 0;
+  rep(i,q){
+    cin>>k;
+    dam+=k;
+    ll l = 0;
+    ll r = n+1;
+    // cout<<"dam="<<dam<<endl;
+    while(r>l+1){
+      ll mid = (l+r)/2;
+      if(a[mid] > dam) r = mid;
+      else l = mid;
+    }
+    if(l == n) cout<<n<<endl;
+    else cout<<n-l<<endl;
+    if(dam >= tot) dam = 0;
+  }
+
 }
 int main(){
   solve();

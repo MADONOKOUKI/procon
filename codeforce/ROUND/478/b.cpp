@@ -26,40 +26,26 @@ typedef pair<P, int> PPI;
 
 #define INF INT_MAX/3
 #define MAX_N 1000
-ll w,h;
-ll c[55][55]={0};
-bool reached[55][55] = {false};
-void dfs(int x,int y){
-  if(x<0||y<0||x>=h||y>=w) return;
-  if(c[x][y] == 0) return;
-  if(reached[x][y]) return;
-  reached[x][y] = true;
-  c[x][y] = 0;
-  dfs(x-1,y-1);
-  dfs(x-1,y);
-  dfs(x-1,y+1);
-  dfs(x,y-1);
-  dfs(x,y+1);
-  dfs(x+1,y-1);
-  dfs(x+1,y);
-  dfs(x+1,y+1);
-}
+std::vector<ll> a(14);
 void solve(){
-   cin.tie(0);
+  cin.tie(0);
   ios::sync_with_stdio(false);
-  while(true){
-    cin>>w>>h;
-    ll cnt = 0;
-    if(w==0&&h==0) return;
-    rep(i,h)rep(j,w) cin>>c[i][j];
-    rep(i,h)rep(j,w) reached[i][j] = false;
-    rep(i,h)rep(j,w) if(c[i][j] == 1) {
-      dfs(i,j);
-      cnt++;
-    }
-    cout<<cnt<<endl;
-
+  ll cnt = 0;
+  rep(i,14) cin>>a[i];
+  rep(i,14){
+    std::vector<ll> f(14);
+    rep(j,14) f[j] = a[j];
+    f[i] = 0;
+    if(i+1 < 14) repl(j,i+1,14) f[j] += (a[i] - (j-i-1)) / 14 + ((a[i] - (j-i-1)) % 14 >= 1 ? 1 : 0);
+    rep(j,i+1) f[j] += (a[i] - (14-i+j-1)) / 14 + ((a[i] - (14-i+j-1)) % 14 >= 1 ? 1 : 0);
+    ll ans = 0;
+    // rep(j,14) cout<<f[j]<<" ";
+    // cout<<endl;
+    rep(j,14) if(f[j] % 2 == 0) ans += f[j];
+    maxch(cnt,ans);
   }
+  cout<<cnt<<endl;
+
 }
 int main(){
   solve();
