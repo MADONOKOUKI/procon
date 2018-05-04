@@ -1,38 +1,36 @@
 #include <bits/stdc++.h>
+
 using namespace std;
-#define fi first
-#define se second
-#define repl(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
-#define rep(i,n) repl(i,0,n)
-#define each(itr,v) for(auto itr:v)
-#define pb(s) push_back(s)
-#define maxch(x,y) x=max(x,y)
-#define minch(x,y) x=min(x,y)
-#define mp(a,b) make_pair(a,b)
-#define all(x) (x).begin(),(x).end()
-#define dbg(x) cout<<#x"="<<x<<endl
-#define maxch(x,y) x=max(x,y)
-#define minch(x,y) x=min(x,y)
-#define uni(x) x.erase(unique(all(x)),x.end())
-template<class T,class U>inline void chmin(T &t,U f){if(t>f)t=f;}
-template<class T,class U>inline void chmax(T &t,U f){if(t<f)t=f;}
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define MIN(a, b) ((a) > (b) ? (b) : (a))
 
 typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<int, int> P;
-typedef pair<P, int> PPI;
 
-#define INF INT_MAX/3
-#define MAX_N 1000
+const int INF = 1000000;
 
-void solve(){
-   cin.tie(0);
-  ios::sync_with_stdio(false);
-
+bool myoperator(const pair<int, int> left, const pair<int, int> right){
+  if(left.first != right.first){
+    return (left.first < right.first);
+  }else{
+    return (left.second >= right.second);
+  }
 }
+
 int main(){
-  solve();
-  return 0;
+  cin.tie(0);
+  ios_base::sync_with_stdio(false);
+  int N; cin >> N;
+  vector<pair<int, int> > pr;
+  for(int i=0;i<N;i++){
+    int x, w; cin >> x >> w;
+    pr.push_back(make_pair(x, w));
+  }
+  sort(pr.begin(), pr.end(), myoperator);
+  for(int i=0;i<N;i++){
+    cout<<pr[i].first<<" "<<pr[i].second<<endl;
+  }
+  int dp[N];
+  fill(dp, dp+N, INF);
+  for(int i=0;i<N;i++){
+    *lower_bound(dp, dp+N, pr[i].first + pr[i].second) = pr[i].second;
+  }
+  cout << lower_bound(dp, dp+N, INF) - dp << endl;
 }
