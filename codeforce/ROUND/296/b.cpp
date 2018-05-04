@@ -9,9 +9,9 @@ const int INF = 1000000;
 bool myoperator(const pair<int, int> left, const pair<int, int> right){
   if(left.first != right.first){
     return (left.first < right.first);
-  }else{
-    return (left.second >= right.second);
-  }
+  // }else{
+  //   return (left.second >= right.second);
+  // }
 }
 
 int main(){
@@ -30,7 +30,7 @@ int main(){
   int dp[N];
   fill(dp, dp+N, INF);
   for(int i=0;i<N;i++){
-    *lower_bound(dp, dp+N, pr[i].first + pr[i].second) = pr[i].second;
+    *lower_bound(dp, dp+N, pr[i].first + pr[i].second) = pr[i].first + pr[i].second;
   }
   cout << lower_bound(dp, dp+N, INF) - dp << endl;
 }
